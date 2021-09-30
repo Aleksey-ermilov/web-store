@@ -1,0 +1,17 @@
+{
+  "name": "web-store",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "concurrently": "^6.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "server": "npm run dev --prefix server",
+    "client": "npm run start --prefix client",
+    "start": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "author": "",
+  "license": "ISC"
+}
