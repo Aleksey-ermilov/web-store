@@ -1,16 +1,16 @@
 import React, {useState,useEffect} from 'react';
 import {Container, Col, Image, Row, Card, Button} from "react-bootstrap";
 import {useParams} from 'react-router-dom'
+import {connect} from 'react-redux'
 
 import {fetchOneDeviceAPI} from "../http/deviceAPI";
+import { ratingAPI } from "../http/userAPI"
 
 import BigStar from '../assets/BigStar.png'
 import Loading from "../components/Loading";
-import Star from "../components/svg/Star";
-import StarOutline from "../components/svg/StarOutline";
 import Rating from "../components/Rating";
 
-const DevicePage = () => {
+const DevicePage = ({user}) => {
     const [isLoading, setIsLoading] = useState(true)
 
     const {id} = useParams()
@@ -23,6 +23,10 @@ const DevicePage = () => {
 
     if (isLoading){
         return <Loading />
+    }
+
+    const changeRating = (rating) => {
+        ratingAPI(rating,id,user._id).then(data => setDevice( prev => ({ ...prev, rating: data.average }) ) )
     }
 
     return (
@@ -54,7 +58,7 @@ const DevicePage = () => {
             </Row>
             <Row className='d-flex flex-column mt-3'>
                 <h2>Характеристики</h2>
-                <Rating rating={device.rating} />
+                <Rating rating={device.rating} onChange={changeRating} />
                 {
                     device.info.map( (info, index) =>
                         <Row
@@ -70,4 +74,12 @@ const DevicePage = () => {
     );
 };
 
-export default DevicePage;
+const mapStateToProps = state => ({
+    user: state.user.user,
+})
+
+const mapDispatchToProps = {
+
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(DevicePage);

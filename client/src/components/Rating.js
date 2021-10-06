@@ -1,33 +1,22 @@
 import React from 'react';
-import StarOutline from "./svg/StarOutline";
-import Star from "./svg/Star";
+import StarRatings from "react-star-ratings";
 
-const Rating = ({rating}) => {
+const Rating = ({rating,onChange}) => {
 
-    const star =  3 //Math.floor(10/rating)
-    const starOutline = 5 - star
-    let arrayStar = []
-    let arrayStarOutline = []
-
-    for(let i = 0; i < star; i++){
-        arrayStar[i] = {Component: <Star />}
-    }
-    for(let i = 0; i < starOutline; i++){
-        arrayStarOutline[i] = {Component: <StarOutline />}
-    }
-
+    const ratingChanged = (newRating) => {
+        onChange(newRating)
+    };
 
     return (
-        <div
-            className='d-flex'
-        >
-            {
-                arrayStar.map( (stat, index) => stat.Component )
-            }
-            {
-                arrayStarOutline.map( (stat, index) => stat.Component )
-            }
-        </div>
+
+            <StarRatings
+                rating={Number(rating)}
+                starRatedColor="#ffb703"
+                changeRating={ratingChanged}
+                name='rating'
+                starDimension="30px"
+            />
+
     );
 };
 
