@@ -36,3 +36,8 @@ export const fetchOneDeviceAPI = async (id) => {
     const {data} = await host.get('api/device/' + id)
     return data
 }
+
+export const ratingAPI = async (rating,deviceId,userId) => {
+    const {data} = await host.post('api/device/rating', {rating,deviceId,userId})
+    return data
+}

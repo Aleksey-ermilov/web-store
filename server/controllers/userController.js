@@ -5,7 +5,6 @@ const ApiError = require("../error/ApiError");
 const User = require('../model/user')
 const Basket = require('../model/basket')
 const Role = require('../model/role')
-const Rating = require('../model/rating')
 
 const generateJwt = (_id,email,role) => {
     return jwt.sign(
@@ -84,51 +83,6 @@ class UserController {
         }
     }
 
-    async setRating (req, res, next) {
-        try {
-            const {body} = req
-
-            if (body.userId){
-                const vote = await Rating.findOne({deviceId: body.deviceId,userId: body.userId})
-                if (!vote){
-                    const rating = await Rating.create({
-                        deviceId: body.deviceId,
-                        userId: body.userId,
-                        rate: body.rating
-                    })
-                    const average = await averageRating(body.deviceId)
-                    return res.json({rating, average})
-                }else {
-                    next(ApiError.badRequest('Вы уже голосовали'))
-                }
-            }else {
-                const user = await User.findOne({email: 'nobody@nobody'})
-                const rating = await Rating.create({
-                    deviceId: body.deviceId,
-                    userId: user._id,
-                    rate: body.rating
-                })
-                const average = await averageRating(body.deviceId)
-                return res.json({rating, average})
-            }
-        }catch (e){
-            next(ApiError.badRequest('Невозможно проголосовать!!!'))
-        }
-    }
-
-    async getRating (req, res, next) {
-        try {
-
-        }catch (e){
-            next(ApiError.badRequest('Невозможно проголосовать!!!'))
-        }
-    }
-}
-
-async function averageRating (deviceId) {
-    const rate = await Rating.find({deviceId})
-    let average = (rate.reduce((partial_sum, a) => partial_sum + Number(a.rate),0)) / rate.length;
-    return Math.round((average*10))/10
 }
 
 module.exports = new UserController()

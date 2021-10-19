@@ -19,8 +19,3 @@ export const checkAPI = async () => {
     localStorage.setItem('token', data.token)
     return jwt_decode(data.token)
 }
-
-export const ratingAPI = async (rating,deviceId,userId) => {
-    const {data} = await host.post('api/user/rating', {rating,deviceId,userId})
-    return data
-}

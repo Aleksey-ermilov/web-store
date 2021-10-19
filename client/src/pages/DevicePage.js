@@ -4,7 +4,7 @@ import {useParams} from 'react-router-dom'
 import {connect} from 'react-redux'
 
 import {fetchOneDeviceAPI} from "../http/deviceAPI";
-import { ratingAPI } from "../http/userAPI"
+import { ratingAPI } from "../http/deviceAPI"
 
 import BigStar from '../assets/BigStar.png'
 import Loading from "../components/Loading";

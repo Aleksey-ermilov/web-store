@@ -12,7 +12,7 @@ const DeviceItem = ({device}) => {
             <Card style={{cursor:'pointer', width: '150px'}} className='mb-2 mt-3' border={'light'}>
                 <Image width={150} height={150} src={ process.env.REACT_APP_API_URL + device.img}/>
                 <div className='d-flex justify-content-between align-items-center mt-1 text-black-50'>
-                    <div>Apple...</div> {/*?????????????????  brand ??????????????*/}
+                    <div>{device.brandId.name}</div>
                     <div className='d-flex align-items-center'>
                         <div>{device.rating}</div>
                         <StarRatings
