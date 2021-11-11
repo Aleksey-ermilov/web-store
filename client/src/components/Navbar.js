@@ -3,15 +3,16 @@ import { connect } from 'react-redux'
 import  {Nav, Container, Navbar, Button} from "react-bootstrap";
 import {NavLink, useHistory} from "react-router-dom";
 
-import {ADMIN_ROUTE, LOGIN_ROUTE, SHOP_ROUTE} from "../utils/consts";
-import {setIsAuth, setUser} from '../store/user/actionUser'
+import {ADMIN_ROUTE, BASKET_ROUTE, LOGIN_ROUTE, SHOP_ROUTE} from "../utils/consts";
+import {setIsAuth, setUser,clearBasket} from '../store/user/actionUser'
 
-const NavBar = ({isAuth,setIsAuth, setUser}) => {
+const NavBar = ({isAuth,setIsAuth, setUser,clearBasket}) => {
     const history = useHistory()
 
     const logOut = () => {
         setIsAuth(false)
         setUser({})
+        clearBasket()
         localStorage.removeItem('token')
     }
 
@@ -23,13 +24,24 @@ const NavBar = ({isAuth,setIsAuth, setUser}) => {
                     <Nav className="ml-auto">
                         <Button
                             variant={'outline-light'}
+                            onClick={ () => history.push(BASKET_ROUTE)}
+                        >
+                            Корзина
+                        </Button>
+                        <Button
+                            variant={'outline-light'}
                             onClick={ () => history.push(ADMIN_ROUTE)}
-                        >Админ панель</Button>
+                            className="ms-4"
+                        >
+                            Админ панель
+                        </Button>
                         <Button
                             variant={'outline-light'}
                             onClick={logOut}
                             className="ms-4"
-                        >Выход</Button>
+                        >
+                            Выход
+                        </Button>
                     </Nav>
                     :
                     <Nav className="ml-auto">
@@ -50,7 +62,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-    setIsAuth, setUser
+    setIsAuth, setUser, clearBasket
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(NavBar);

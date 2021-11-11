@@ -6,12 +6,16 @@ import {connect} from 'react-redux'
 import {fetchOneDeviceAPI} from "../http/deviceAPI";
 import { ratingAPI } from "../http/deviceAPI"
 
+import { addDeviceBasket, updateDeviceBasket } from "../store/user/actionUser";
+
 import BigStar from '../assets/BigStar.png'
 import Loading from "../components/Loading";
 import Rating from "../components/Rating";
+import Counter from "../components/Counter";
 
-const DevicePage = ({user}) => {
+const DevicePage = ({user,basket,addDeviceBasket,updateDeviceBasket}) => {
     const [isLoading, setIsLoading] = useState(true)
+    const [count, setCount] = useState(1)
 
     const {id} = useParams()
     const [device, setDevice] = useState({info: []})
@@ -21,12 +25,22 @@ const DevicePage = ({user}) => {
             .finally(() => setIsLoading(false))
     },[])
 
-    if (isLoading){
-        return <Loading />
+    const addBasket = (device) => {
+        const bDev = basket.find(dev => dev._id === device._id)
+        if (bDev){
+            updateDeviceBasket({...bDev, count: bDev.count + count})
+        }else {
+            addDeviceBasket({...device, count})
+        }
+        setCount(1)
     }
 
     const changeRating = (rating) => {
         ratingAPI(rating,id,user._id).then(data => setDevice( prev => ({ ...prev, rating: data.average }) ) )
+    }
+
+    if (isLoading){
+        return <Loading />
     }
 
     return (
@@ -52,7 +66,16 @@ const DevicePage = ({user}) => {
                         style={{width:300, height: 300, fontSize:32, border: '5px solid lightgray'}}
                     >
                         <h3>От: {device.price} руб.</h3>
-                        <Button variant='outline-dark'>Добавить в корзину</Button>
+                        <Counter
+                            count={count}
+                            setCount={setCount}
+                        />
+                        <Button
+                            variant='outline-dark'
+                            onClick={() => addBasket(device)}
+                        >
+                            Добавить в корзину
+                        </Button>
                     </Card>
                 </Col>
             </Row>
@@ -76,10 +99,11 @@ const DevicePage = ({user}) => {
 
 const mapStateToProps = state => ({
     user: state.user.user,
+    basket: state.user.basket
 })
 
 const mapDispatchToProps = {
-
+    addDeviceBasket, updateDeviceBasket
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(DevicePage);
