@@ -2,7 +2,8 @@ import {
     ADD_DEVICE_BASKET, CLEAR_BASKET,
     REMOVE_DEVICE_BASKET,
     SET_AUTH,
-    SET_USER, UPDATE_DEVICE_BASKET
+    SET_USER, UPDATE_DEVICE_BASKET,
+    SET_BASKET
 } from "./types";
 
 const initialState = {
@@ -40,6 +41,9 @@ export const userReducer = (state = initialState, action) => {
         }
         case CLEAR_BASKET: return {
             ...state, basket: []
+        }
+        case SET_BASKET: return {
+            ...state, basket: action.payload
         }
         default: return state
     }

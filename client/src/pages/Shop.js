@@ -16,16 +16,16 @@ const Shop = ({setType,setBrand, setDevice,setTotalCount,selectedBrand,selectedT
     useEffect(() => {
         fetchTypeAPI().then( data => setType(data) )
         fetchBrandAPI().then( data => setBrand(data) )
-        fetchDeviceAPI(null,null,1,3).then( data => {
+        /*fetchDeviceAPI(null,null,1,3).then( data => {
             setDevice(data.devices)
             setTotalCount(data.totalCount)
-        })
+        })*/
     },[])
 
     useEffect(() => {
         const selType = selectedType._id ? selectedType._id : null
         const selBrand = selectedBrand._id ? selectedBrand._id : null
-        fetchDeviceAPI(selType,selBrand,page,3).then( data => {
+        fetchDeviceAPI(selType,selBrand,page,10).then( data => {
             setDevice(data.devices)
             setTotalCount(data.totalCount)
         })

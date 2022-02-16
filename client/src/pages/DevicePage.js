@@ -45,11 +45,16 @@ const DevicePage = ({user,basket,addDeviceBasket,updateDeviceBasket}) => {
 
     return (
         <Container className='mt-3'>
+            <Row className='mb-2'>
+                <h1>
+                    {device.name}
+                </h1>
+            </Row>
             <Row>
                 <Col md={4}>
                     <Image height={300} width={300} src={process.env.REACT_APP_API_URL + device.img} />
                 </Col>
-                <Col md={4}>
+                {/*<Col md={4}>
                     <Row className='d-flex flex-column align-items-center'>
                         <h2>{device.name}</h2>
                         <div
@@ -59,8 +64,8 @@ const DevicePage = ({user,basket,addDeviceBasket,updateDeviceBasket}) => {
                             {device.rating}
                         </div>
                     </Row>
-                </Col>
-                <Col md={4}>
+                </Col>*/}
+                <Col md={{ span: 4, offset: 4 }}>
                     <Card
                         className='d-flex flex-column align-items-center justify-content-around'
                         style={{width:300, height: 300, fontSize:32, border: '5px solid lightgray'}}
@@ -79,18 +84,27 @@ const DevicePage = ({user,basket,addDeviceBasket,updateDeviceBasket}) => {
                     </Card>
                 </Col>
             </Row>
-            <Row className='d-flex flex-column mt-3'>
-                <h2>Характеристики</h2>
+            <Row className='mb-5 mt-3' >
+                <div className='fs-4' >Оцените наш товар!</div>
                 <Rating rating={device.rating} onChange={changeRating} />
+            </Row>
+            <Row className='d-flex flex-column mt-3'>
                 {
-                    device.info.map( (info, index) =>
-                        <Row
-                            key={info._id}
-                            style={{background: index % 2 === 0 ? 'lightgray' : 'transparent', padding:10}}
-                        >
-                            {info.title}: {info.description}
-                        </Row>
-                    )
+                    !!device.info.length && <>
+                        <h2>Характеристики</h2>
+
+                        {
+                            device.info.map( (info, index) =>
+                                <Row
+                                    key={info._id}
+                                    style={{background: index % 2 === 0 ? 'lightgray' : 'transparent', padding:10}}
+                                >
+                                    {info.title}: {info.description}
+                                </Row>
+                            )
+                        }
+                    </>
+
                 }
             </Row>
         </Container>

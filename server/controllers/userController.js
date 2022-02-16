@@ -6,9 +6,9 @@ const User = require('../model/user')
 const Basket = require('../model/basket')
 const Role = require('../model/role')
 
-const generateJwt = (_id,email,role) => {
+const generateJwt = (_id,email,roles) => {
     return jwt.sign(
-        {_id, email, role},
+        {_id, email, roles},
         process.env.SECRET_KEY,
         {expiresIn: '8h'}
     )
@@ -71,6 +71,59 @@ class UserController {
             const role = await Role.create({value})
             return res.json({role})
         }catch (e){
+            next(ApiError.badRequest(e.message))
+        }
+    }
+
+    async getUser (req, res, next){
+        try{
+            const {user} = req
+            let userFinder = await User.findById(user._id)
+            userFinder.password = undefined
+
+            res.json({user: userFinder})
+        }catch (e) {
+            next(ApiError.badRequest(e.message))
+        }
+    }
+
+    async getBasket (req, res, next){
+        try{
+            const {user} = req
+            const basketFinder = await Basket.findOne({userId: user._id})
+                .populate({
+                    path: 'devices',
+                    populate: {
+                        path: 'device'
+                    }
+                }).exec()
+            res.json({basket: basketFinder})
+        }catch (e) {
+            next(ApiError.badRequest(e.message))
+        }
+    }
+
+    async addToBasket (req, res, next){
+        try{
+            const {user, body: devices} = req
+            const arrDevices = devices.map( device => {
+                return { device: device._id, count:  device.count}
+            })
+            const updated = await Basket.findOneAndUpdate({userId: user._id}, {devices:arrDevices})
+            res.json({message: 'ok', updated})
+        }catch (e) {
+            next(ApiError.badRequest(e.message))
+        }
+    }
+
+    async pay (req, res, next){
+        try{
+            const {user} = req
+
+            const basketFinder = await Basket.findOneAndUpdate({userId: user._id},{devices: []})
+
+            res.json({message: 'ok'})
+        }catch (e) {
             next(ApiError.badRequest(e.message))
         }
     }

@@ -21,7 +21,7 @@ const initialState = {
     devices: [],
     page: 1,
     totalCount: 0,
-    limit: 3
+    limit: 10  // default
 }
 
 export const deviceReducer = (state = initialState, action) => {

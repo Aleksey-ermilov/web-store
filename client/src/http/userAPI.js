@@ -19,3 +19,23 @@ export const checkAPI = async () => {
     localStorage.setItem('token', data.token)
     return jwt_decode(data.token)
 }
+
+export const getUser = async () => {
+    const {data} = await authHost.get('api/user/getUser' )
+    return data
+}
+
+export const getBasket = async () => {
+    const {data} = await authHost.get('api/user/getBasket' )
+    return data.basket && data.basket.devices.map( d =>  ({...d.device, count: d.count}) )
+}
+
+export const addToBasket = async (devices) =>{
+    const {data} = await authHost.post('api/user/addToBasket', devices )
+    return data
+}
+
+export const pay = async (devices) => {
+    const {data} = await authHost.post('api/user/pay', devices)
+    return data
+}

@@ -3,12 +3,12 @@ import {Container,Card,Form,Button} from 'react-bootstrap'
 import {NavLink, useLocation, useHistory} from "react-router-dom";
 import {connect} from "react-redux";
 
-import {setIsAuth, setUser} from "../store/user/actionUser";
+import {setIsAuth, setUser, setBasket} from "../store/user/actionUser";
 
 import {LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE} from "../utils/consts";
-import {registrationAPI, loginAPI} from "../http/userAPI";
+import {registrationAPI, loginAPI, getBasket} from "../http/userAPI";
 
-const Auth = ({setIsAuth, setUser}) => {
+const Auth = ({setIsAuth, setUser,setBasket}) => {
     const location = useLocation()
     const history = useHistory()
     const isLogin = location.pathname === LOGIN_ROUTE
@@ -24,6 +24,8 @@ const Auth = ({setIsAuth, setUser}) => {
             }else {
                 data = await registrationAPI(email,password)
             }
+            const basket = await getBasket()
+            setBasket(basket)
             setUser(data)
             setIsAuth(true)
             history.push(SHOP_ROUTE)
@@ -82,7 +84,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-    setIsAuth, setUser
+    setIsAuth, setUser, setBasket
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(Auth);

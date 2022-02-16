@@ -1,27 +1,40 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {connect} from "react-redux";
 import {useHistory} from "react-router-dom";
 
 import  {Container, Button} from "react-bootstrap";
 
 import {removeDeviceBasket, updateDeviceBasket } from "../store/user/actionUser";
+import {addToBasket} from "../http/userAPI";
 
 import BasketCard from "../components/BasketCard";
-import {SHOP_ROUTE} from "../utils/consts";
+import {PAYMENT_ROUTE, SHOP_ROUTE} from "../utils/consts";
 
 
 const Basket = ({basket, removeDeviceBasket,updateDeviceBasket}) => {
 
     const history = useHistory()
 
+    const updateBasket = async () => {
+        await addToBasket(basket)
+    }
+
+    useEffect( updateBasket, [basket])
+
+    const sum = basket && (basket.reduce((partial_sum, a) => partial_sum + (Number(a.price)* +a.count),0));
+
     const removeDevice = id => {
         removeDeviceBasket(id)
+    }
+
+    const updateDevices = (device) => {
+        updateDeviceBasket(device)
     }
 
     return (
         <Container>
             {
-                basket.length ?
+                basket && basket.length ?
                         <>
                             {basket.map(device =>
                                 <BasketCard
@@ -35,9 +48,10 @@ const Basket = ({basket, removeDeviceBasket,updateDeviceBasket}) => {
                             <div
                                 className='d-flex justify-content-between'
                             >
-                                <div className='fs-4'>Сумма: 777</div>
+                                <div className='fs-4'>Сумма: {sum}</div>
                                 <Button
                                     variant='outline-dark'
+                                    onClick={() => history.push(PAYMENT_ROUTE, {sum})}
                                 >
                                     Оплатить
                                 </Button>
