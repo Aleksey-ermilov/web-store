@@ -17,7 +17,7 @@ function App({setIsAuth, setUser}) {
             setIsAuth(true)
             setUser(data)
         }).finally(() => setIsLoading(false))
-    }, [])
+    }, [setIsAuth,setUser])
 
     if (isLoading){
         return (

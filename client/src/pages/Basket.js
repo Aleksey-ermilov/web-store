@@ -15,20 +15,17 @@ const Basket = ({basket, removeDeviceBasket,updateDeviceBasket}) => {
 
     const history = useHistory()
 
-    const updateBasket = async () => {
-        await addToBasket(basket)
-    }
-
-    useEffect( updateBasket, [basket])
+    useEffect( () => {
+        async function myF (){
+            await addToBasket(basket)
+        }
+        myF ()
+    }, [basket])
 
     const sum = basket && (basket.reduce((partial_sum, a) => partial_sum + (Number(a.price)* +a.count),0));
 
     const removeDevice = id => {
         removeDeviceBasket(id)
-    }
-
-    const updateDevices = (device) => {
-        updateDeviceBasket(device)
     }
 
     return (

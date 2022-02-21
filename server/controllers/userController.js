@@ -103,6 +103,27 @@ class UserController {
         }
     }
 
+    async editUser (req, res, next){
+        try{
+            const {user} = req.body
+
+            const oldUser = await User.findById(user._id)
+            let comparePassword = bcrypt.compareSync(user.password, oldUser.password)
+            if (comparePassword){
+                return next(ApiError.badRequest('Пароли совподают! Подумайте ещё.'))
+            }
+
+            const hashPassword = await bcrypt.hash(user.password, 5)
+
+            const changeUser = await User.findOneAndUpdate(user._id,{email:user.email, password: hashPassword},{new:true})
+            changeUser.password = undefined
+
+            res.json({user: changeUser})
+        }catch (e) {
+            next(ApiError.badRequest(e.message))
+        }
+    }
+
     async addToBasket (req, res, next){
         try{
             const {user, body: devices} = req

@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {Button, Form, Modal, Dropdown, Row, Col} from "react-bootstrap";
 import {connect} from "react-redux";
-import {selectedBrand, selectedType} from "../../store/device/actionDevice";
 import {createDeviceAPI} from "../../http/deviceAPI";
 
 const CreateDevice = ({show,onHide, types, brands}) => {

@@ -25,6 +25,11 @@ export const getUser = async () => {
     return data
 }
 
+export const editUser = async (user) => {
+    const {data} = await authHost.post('api/user/editUser', {user} )
+    return data
+}
+
 export const getBasket = async () => {
     const {data} = await authHost.get('api/user/getBasket' )
     return data.basket && data.basket.devices.map( d =>  ({...d.device, count: d.count}) )

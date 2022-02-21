@@ -1,9 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import  {Nav, Container, Navbar, Button} from "react-bootstrap";
+import  {Nav, Container, Navbar, Button, Dropdown} from "react-bootstrap";
 import {NavLink, useHistory, useLocation} from "react-router-dom";
 
-import {ADMIN_ROUTE, BASKET_ROUTE, LOGIN_ROUTE, SHOP_ROUTE} from "../utils/consts";
+import {
+    ADMIN_ROUTE,
+    BASKET_ROUTE,
+    LOGIN_ROUTE,
+    SHOP_ROUTE,
+    WISH_LIST_ROUTE,
+    ORDER_LIST_ROUTE,
+    EDIT_USER_ROUTE
+} from "../utils/consts";
+
 import {setIsAuth, setUser,clearBasket} from '../store/user/actionUser'
 
 const NavBar = ({user,isAuth,setIsAuth, setUser,clearBasket}) => {
@@ -44,15 +53,19 @@ const NavBar = ({user,isAuth,setIsAuth, setUser,clearBasket}) => {
                             </Button>
                         }
 
+                        <Dropdown className="ms-4">
+                            <Dropdown.Toggle variant="outline-light" id="dropdown-basic">
+                                {user.email}
+                            </Dropdown.Toggle>
 
+                            <Dropdown.Menu variant='dark'>
+                                <Dropdown.Item onClick={() => history.push(WISH_LIST_ROUTE)}>Понравилось</Dropdown.Item>
+                                <Dropdown.Item onClick={() => history.push(ORDER_LIST_ROUTE)}>История заказов</Dropdown.Item>
+                                <Dropdown.Item onClick={() => history.push(EDIT_USER_ROUTE)}>Изменить профиль</Dropdown.Item>
+                                <Dropdown.Item onClick={logOut}>Выход</Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
 
-                        <Button
-                            variant={'outline-light'}
-                            onClick={logOut}
-                            className="ms-4"
-                        >
-                            Выход
-                        </Button>
                     </Nav>
                     :
                     <Nav className="ml-auto">

@@ -5,7 +5,10 @@ import {
     REGISTRATION_ROUTE,
     SHOP_ROUTE,
     DEVICE_ROUTE,
-    PAYMENT_ROUTE
+    PAYMENT_ROUTE,
+    WISH_LIST_ROUTE,
+    ORDER_LIST_ROUTE,
+    EDIT_USER_ROUTE
 } from "./utils/consts";
 
 import Admin from "./pages/Admin";
@@ -14,6 +17,9 @@ import Shop from "./pages/Shop";
 import DevicePage from "./pages/DevicePage";
 import Auth from "./pages/Auth";
 import Payment from "./pages/Payment";
+import EditUser from "./pages/EditUser";
+import WishList from "./pages/WishList";
+import OrderList from "./pages/OrderList";
 
 export const authRoutes = [
     {
@@ -27,6 +33,18 @@ export const authRoutes = [
     {
         path: PAYMENT_ROUTE,
         Component: Payment
+    },
+    {
+        path: EDIT_USER_ROUTE,
+        Component: EditUser
+    },
+    {
+        path: ORDER_LIST_ROUTE,
+        Component: OrderList
+    },
+    {
+        path: WISH_LIST_ROUTE,
+        Component: WishList
     },
 ]
 
