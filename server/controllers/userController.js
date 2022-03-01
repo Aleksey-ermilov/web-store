@@ -5,6 +5,7 @@ const ApiError = require("../error/ApiError");
 const User = require('../model/user')
 const Basket = require('../model/basket')
 const Role = require('../model/role')
+const Order = require('../model/order')
 
 const generateJwt = (_id,email,roles) => {
     return jwt.sign(
@@ -68,8 +69,63 @@ class UserController {
     async createRole (req, res, next) {
         try {
             const {value} = req.body
+            const findRole = await Role.findOne({value})
+            if (findRole){
+                return next(ApiError.badRequest('Такая роль уже существует'))
+            }
             const role = await Role.create({value})
             return res.json({role})
+        }catch (e){
+            next(ApiError.badRequest(e.message))
+        }
+    }
+
+    async addRoleUser (req, res, next) {
+        try {
+            const {id,role} = req.body
+            const user = await User.findById(id)
+
+            const isRole = user.roles.find( r => r === role.value)
+
+            if (isRole){
+                return next(ApiError.badRequest(`У ${user.email} уже есть роль ${role.value}`))
+            }
+
+            user.roles.push(role.value)
+            await user.save()
+
+            return res.json({name: user.email, _id: user._id, roles: user.roles})
+        }catch (e){
+            next(ApiError.badRequest(e.message))
+        }
+    }
+
+    async getRoleUsers (req, res, next) {
+        try {
+            const roles = await Role.find()
+            let users = await User.find()
+            users = users.map(user => ({name: user.email, _id: user._id, roles: user.roles}) )
+
+            return res.json({roles,users})
+        }catch (e){
+            next(ApiError.badRequest(e.message))
+        }
+    }
+
+    async kickRoleUser (req, res, next) {
+        try {
+            const {id,role} = req.body
+            let user = await User.findById(id)
+
+            if (role === 'USER'){
+                return next(ApiError.badRequest(`Роль 'USER' нельзя удалть`))
+            }
+
+            user.roles = user.roles.filter( r => r !== role)
+
+            await user.save()
+
+            return res.json({name: user.email, _id: user._id, roles: user.roles})
         }catch (e){
             next(ApiError.badRequest(e.message))
         }
@@ -143,7 +199,27 @@ class UserController {
 
             const basketFinder = await Basket.findOneAndUpdate({userId: user._id},{devices: []})
 
+            const orderList = await Order.create({ userId: basketFinder.userId,devices: basketFinder.devices })
+
             res.json({message: 'ok'})
+        }catch (e) {
+            next(ApiError.badRequest(e.message))
+        }
+    }
+
+    async getOrderList (req, res, next){
+        try{
+            const {user} = req
+
+            const orderList = await Order.find({userId: user._id})
+                .populate({
+                    path: 'devices',
+                    populate: {
+                        path: 'device'
+                    }
+                }).exec()
+
+            res.json(orderList)
         }catch (e) {
             next(ApiError.badRequest(e.message))
         }

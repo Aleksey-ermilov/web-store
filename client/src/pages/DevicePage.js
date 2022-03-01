@@ -8,7 +8,6 @@ import { ratingAPI } from "../http/deviceAPI"
 
 import { addDeviceBasket, updateDeviceBasket } from "../store/user/actionUser";
 
-import BigStar from '../assets/BigStar.png'
 import Loading from "../components/Loading";
 import Rating from "../components/Rating";
 import Counter from "../components/Counter";

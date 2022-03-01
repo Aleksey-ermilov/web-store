@@ -8,7 +8,6 @@ import {
     BASKET_ROUTE,
     LOGIN_ROUTE,
     SHOP_ROUTE,
-    WISH_LIST_ROUTE,
     ORDER_LIST_ROUTE,
     EDIT_USER_ROUTE
 } from "../utils/consts";
@@ -59,7 +58,6 @@ const NavBar = ({user,isAuth,setIsAuth, setUser,clearBasket}) => {
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu variant='dark'>
-                                <Dropdown.Item onClick={() => history.push(WISH_LIST_ROUTE)}>Понравилось</Dropdown.Item>
                                 <Dropdown.Item onClick={() => history.push(ORDER_LIST_ROUTE)}>История заказов</Dropdown.Item>
                                 <Dropdown.Item onClick={() => history.push(EDIT_USER_ROUTE)}>Изменить профиль</Dropdown.Item>
                                 <Dropdown.Item onClick={logOut}>Выход</Dropdown.Item>

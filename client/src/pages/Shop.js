@@ -10,7 +10,6 @@ import Pages from "../components/Pages";
 import {fetchTypeAPI,fetchBrandAPI,fetchDeviceAPI} from "../http/deviceAPI";
 import {setBrand, setType, setDevice,setTotalCount} from "../store/device/actionDevice";
 
-
 const Shop = ({setType,setBrand, setDevice,setTotalCount,selectedBrand,selectedType,page}) => {
 
     useEffect(() => {

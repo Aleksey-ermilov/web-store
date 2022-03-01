@@ -6,7 +6,6 @@ import {
     SHOP_ROUTE,
     DEVICE_ROUTE,
     PAYMENT_ROUTE,
-    WISH_LIST_ROUTE,
     ORDER_LIST_ROUTE,
     EDIT_USER_ROUTE
 } from "./utils/consts";
@@ -18,7 +17,6 @@ import DevicePage from "./pages/DevicePage";
 import Auth from "./pages/Auth";
 import Payment from "./pages/Payment";
 import EditUser from "./pages/EditUser";
-import WishList from "./pages/WishList";
 import OrderList from "./pages/OrderList";
 
 export const authRoutes = [
@@ -41,10 +39,6 @@ export const authRoutes = [
     {
         path: ORDER_LIST_ROUTE,
         Component: OrderList
-    },
-    {
-        path: WISH_LIST_ROUTE,
-        Component: WishList
     },
 ]
 

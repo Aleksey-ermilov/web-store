@@ -1,0 +1,3 @@
+export const GET_USERS_ROLES = 'ADMIN/GET_USERS_ROLES'
+export const SET_USERS = 'ADMIN/SET_USERS'
+export const ADD_ROLE = 'ADMIN/ADD_ROLE'
