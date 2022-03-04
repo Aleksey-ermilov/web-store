@@ -6,7 +6,9 @@ import {
     SET_DEVICE,
     SET_LIMIT,
     SET_PAGE,
-    SET_TOTAL_COUNT
+    SET_TOTAL_COUNT,
+    ADD_BRAND,
+    ADD_TYPE
 } from "./types";
 
 const initialState = {
@@ -35,6 +37,16 @@ export const deviceReducer = (state = initialState, action) => {
             return {
                 ...state,
                 types: [ ...state.types.filter( t => t._id === 0), ...action.payload]
+            }
+        case ADD_BRAND:
+            return {
+                ...state,
+                brands: [ ...state.brands, action.payload]
+            }
+        case ADD_TYPE:
+            return {
+                ...state,
+                types: [ ...state.types, action.payload]
             }
         case SET_DEVICE:
             return {

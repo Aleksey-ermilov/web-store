@@ -3,13 +3,14 @@ import {
     REMOVE_DEVICE_BASKET,
     SET_AUTH,
     SET_USER, UPDATE_DEVICE_BASKET,
-    SET_BASKET
+    SET_BASKET, SET_ERROR
 } from "./types";
 
 const initialState = {
     isAuth: false,
     user: {},
     basket: [],
+    error: null
 }
 
 export const userReducer = (state = initialState, action) => {
@@ -44,6 +45,9 @@ export const userReducer = (state = initialState, action) => {
         }
         case SET_BASKET: return {
             ...state, basket: action.payload
+        }
+        case SET_ERROR: return {
+            ...state, error: action.payload
         }
         default: return state
     }

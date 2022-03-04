@@ -4,11 +4,11 @@ import  {Container, Button, Form} from "react-bootstrap";
 
 import {getUser,editUser} from "../http/userAPI";
 
-import { setUser } from "../store/user/actionUser";
+import { setUser, setError } from "../store/user/actionUser";
 
 import Loading from "../components/Loading";
 
-const EditUser = ({setUser}) => {
+const EditUser = ({setUser,setError}) => {
     const [ password, setPassword] = useState('')
 
     const [newUser,setNewUser] = useState({})
@@ -17,6 +17,7 @@ const EditUser = ({setUser}) => {
 
     useEffect(()=>{
         getUser().then(data => setNewUser(data.user))
+            .catch(e => setError(e.response.data.message))
             .finally(() => setIsLoading(false))
     },[getUser])
 
@@ -25,6 +26,7 @@ const EditUser = ({setUser}) => {
             console.log('data',data)
             setUser(data.user)
         })
+            .catch(e => setError(e.response.data.message))
 
     }
 
@@ -67,7 +69,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-    setUser
+    setUser,setError
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(EditUser);

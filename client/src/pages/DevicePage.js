@@ -6,13 +6,13 @@ import {connect} from 'react-redux'
 import {fetchOneDeviceAPI} from "../http/deviceAPI";
 import { ratingAPI } from "../http/deviceAPI"
 
-import { addDeviceBasket, updateDeviceBasket } from "../store/user/actionUser";
+import { addDeviceBasket, updateDeviceBasket,setError } from "../store/user/actionUser";
 
 import Loading from "../components/Loading";
 import Rating from "../components/Rating";
 import Counter from "../components/Counter";
 
-const DevicePage = ({user,basket,addDeviceBasket,updateDeviceBasket}) => {
+const DevicePage = ({user,basket,addDeviceBasket,updateDeviceBasket,setError}) => {
     const [isLoading, setIsLoading] = useState(true)
     const [count, setCount] = useState(1)
 
@@ -21,6 +21,7 @@ const DevicePage = ({user,basket,addDeviceBasket,updateDeviceBasket}) => {
 
     useEffect(() => {
         fetchOneDeviceAPI(id).then(data => setDevice({...data.device, info: data.info}))
+            .catch(e => setError(e.response.data.message))
             .finally(() => setIsLoading(false))
     },[])
 
@@ -35,7 +36,9 @@ const DevicePage = ({user,basket,addDeviceBasket,updateDeviceBasket}) => {
     }
 
     const changeRating = (rating) => {
-        ratingAPI(rating,id,user._id).then(data => setDevice( prev => ({ ...prev, rating: data.average }) ) )
+        ratingAPI(rating,id,user._id)
+            .then(data => setDevice( prev => ({ ...prev, rating: data.average }) ) )
+            .catch(e => setError(e.response.data.message))
     }
 
     if (isLoading){
@@ -53,17 +56,6 @@ const DevicePage = ({user,basket,addDeviceBasket,updateDeviceBasket}) => {
                 <Col md={4}>
                     <Image height={300} width={300} src={process.env.REACT_APP_API_URL + device.img} />
                 </Col>
-                {/*<Col md={4}>
-                    <Row className='d-flex flex-column align-items-center'>
-                        <h2>{device.name}</h2>
-                        <div
-                            className='d-flex align-items-center justify-content-center'
-                            style={{background: `url(${BigStar}) no-repeat center center`, width:240, height:240, backgroundSize:'cover', fontSize:64}}
-                        >
-                            {device.rating}
-                        </div>
-                    </Row>
-                </Col>*/}
                 <Col md={{ span: 4, offset: 4 }}>
                     <Card
                         className='d-flex flex-column align-items-center justify-content-around'
@@ -116,7 +108,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-    addDeviceBasket, updateDeviceBasket
+    addDeviceBasket, updateDeviceBasket,setError
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(DevicePage);

@@ -5,14 +5,14 @@ import { connect } from 'react-redux'
 import {Container, Button, Col, Row, Form,Card} from "react-bootstrap";
 
 import { getUser, pay } from "../http/userAPI";
-import {clearBasket} from "../store/user/actionUser";
+import {clearBasket,setError} from "../store/user/actionUser";
 
 import {SHOP_ROUTE} from "../utils/consts";
 
 import Loading from "../components/Loading";
 import SuccessBuy from "../components/modals/SuccessBuy";
 
-const Payment = ({basket,clearBasket}) => {
+const Payment = ({basket,clearBasket,setError}) => {
     const history = useHistory()
     const location = useLocation()
 
@@ -22,6 +22,7 @@ const Payment = ({basket,clearBasket}) => {
 
     useEffect(()=>{
         getUser().then(data => setUser(data.user))
+            .catch(e => setError(e.response.data.message))
             .finally(() => setIsLoading(false))
     },[getUser])
 
@@ -29,6 +30,7 @@ const Payment = ({basket,clearBasket}) => {
         pay(basket).then(data => {
             setIsSuccessBuyVisible(true)
         })
+            .catch(e => setError(e.response.data.message))
     }
 
     const hideModal = () => {
@@ -94,7 +96,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-    clearBasket
+    clearBasket,setError
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(Payment);

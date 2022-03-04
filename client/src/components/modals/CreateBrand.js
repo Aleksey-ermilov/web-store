@@ -1,15 +1,13 @@
 import React, {useState} from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
-import {createBrandAPI} from "../../http/deviceAPI";
 
-const CreateBrand = ({show,onHide}) => {
+const CreateBrand = ({show,onHide,addBrand}) => {
     const [value, setValue] = useState('')
 
-    const addBrand = () => {
-        createBrandAPI({name: value}).then(data => {
-            setValue('')
-            onHide()
-        })
+    const handlerBtn = () => {
+        addBrand(value)
+        setValue('')
+        onHide()
     }
 
     return (
@@ -35,7 +33,7 @@ const CreateBrand = ({show,onHide}) => {
             </Modal.Body>
             <Modal.Footer>
                 <Button variant='outline-danger' onClick={onHide}>Закрыть</Button>
-                <Button variant='outline-success' onClick={addBrand}>Добавить</Button>
+                <Button variant='outline-success' onClick={handlerBtn}>Добавить</Button>
             </Modal.Footer>
         </Modal>
     );

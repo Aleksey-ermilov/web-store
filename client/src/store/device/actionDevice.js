@@ -3,7 +3,7 @@ import {
     SET_DEVICE, SET_LIMIT, SET_PAGE,
     SET_SELECTED_BRAND,
     SET_SELECTED_TYPE, SET_TOTAL_COUNT,
-    SET_TYPE
+    SET_TYPE,ADD_TYPE,ADD_BRAND
 } from './types'
 
 export function setType (type) {
@@ -12,6 +12,14 @@ export function setType (type) {
 
 export function setBrand (brand) {
     return {type: SET_BRAND, payload: brand}
+}
+
+export function addType (type) {
+    return {type: ADD_TYPE, payload: type}
+}
+
+export function addBrand (brand) {
+    return {type: ADD_BRAND, payload: brand}
 }
 
 export function setDevice (device) {

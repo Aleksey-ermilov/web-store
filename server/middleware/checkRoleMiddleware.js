@@ -16,8 +16,8 @@ module.exports = function (role){
 
             let isAccess = false
             for(let i = 0; i < role.length; i++){
-                for (let j = 0; j < decoded.role.length; j++){
-                    if (role[i] === decoded.role[j]){
+                for (let j = 0; j < decoded.roles.length; j++){
+                    if (role[i] === decoded.roles[j]){
                         isAccess = true
                         break;
                     }

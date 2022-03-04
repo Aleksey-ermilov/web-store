@@ -10,15 +10,13 @@ import Pages from "../components/Pages";
 import {fetchTypeAPI,fetchBrandAPI,fetchDeviceAPI} from "../http/deviceAPI";
 import {setBrand, setType, setDevice,setTotalCount} from "../store/device/actionDevice";
 
-const Shop = ({setType,setBrand, setDevice,setTotalCount,selectedBrand,selectedType,page}) => {
+import {setError} from "../store/user/actionUser";
+
+const Shop = ({setType,setBrand, setDevice,setTotalCount,selectedBrand,selectedType,page,setError}) => {
 
     useEffect(() => {
-        fetchTypeAPI().then( data => setType(data) )
-        fetchBrandAPI().then( data => setBrand(data) )
-        /*fetchDeviceAPI(null,null,1,3).then( data => {
-            setDevice(data.devices)
-            setTotalCount(data.totalCount)
-        })*/
+        fetchTypeAPI().then( data => setType(data) ).catch(e => setError(e.response.data.message))
+        fetchBrandAPI().then( data => setBrand(data) ).catch(e => setError(e.response.data.message))
     },[])
 
     useEffect(() => {
@@ -28,6 +26,7 @@ const Shop = ({setType,setBrand, setDevice,setTotalCount,selectedBrand,selectedT
             setDevice(data.devices)
             setTotalCount(data.totalCount)
         })
+            .catch(e => setError(e.response.data.message))
     },[page,selectedType,selectedBrand])
 
     return (
@@ -54,7 +53,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-    setType, setBrand, setDevice,setTotalCount
+    setType, setBrand, setDevice,setTotalCount,setError
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(Shop);

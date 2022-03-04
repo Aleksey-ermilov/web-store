@@ -1,7 +1,7 @@
 import {
     ADD_DEVICE_BASKET, CLEAR_BASKET,
     REMOVE_DEVICE_BASKET,
-    SET_AUTH, SET_BASKET,
+    SET_AUTH, SET_BASKET, SET_ERROR,
     SET_USER, UPDATE_DEVICE_BASKET
 } from './types'
 
@@ -38,6 +38,10 @@ export function clearBasket () {
 
 export function setBasket (basket) {
     return {type: SET_BASKET, payload: basket}
+}
+
+export function setError (error) {
+    return {type: SET_ERROR, payload: error}
 }
 
 export function updateUser (user) {

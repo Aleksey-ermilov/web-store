@@ -1,16 +1,13 @@
 import React, {useState} from 'react';
 import {Modal, Button, Form} from "react-bootstrap";
 
-import {createTypeAPI} from '../../http/deviceAPI'
-
-const CreateType = ({show,onHide}) => {
+const CreateType = ({show,onHide,addType}) => {
     const [value, setValue] = useState('')
 
-    const addType = () => {
-        createTypeAPI({name: value}).then(data => {
-            setValue('')
-            onHide()
-        })
+    const handlerBtn = () => {
+        addType(value)
+        setValue('')
+        onHide()
     }
 
     return (
@@ -36,7 +33,7 @@ const CreateType = ({show,onHide}) => {
             </Modal.Body>
             <Modal.Footer>
                 <Button variant='outline-danger' onClick={onHide}>Закрыть</Button>
-                <Button variant='outline-success' onClick={addType}>Добавить</Button>
+                <Button variant='outline-success' onClick={handlerBtn}>Добавить</Button>
             </Modal.Footer>
         </Modal>
     );

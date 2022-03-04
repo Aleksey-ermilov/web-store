@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
 import {Button, Form, Modal, Dropdown, Row, Col} from "react-bootstrap";
 import {connect} from "react-redux";
-import {createDeviceAPI} from "../../http/deviceAPI";
 
-const CreateDevice = ({show,onHide, types, brands}) => {
+const CreateDevice = ({show,onHide, types, brands,addDevice}) => {
     const [name, setName] = useState('')
     const [price, setPrice] = useState('')
     const [file, setFile] = useState(null)
@@ -27,7 +26,7 @@ const CreateDevice = ({show,onHide, types, brands}) => {
         setInfo(info.map(i => i.number === number ? {...i, [key]: value} : i))
     }
 
-    const addDevice = () => {
+    const handlerBtn = () => {
         const formData = new FormData()
         formData.append('name',name)
         formData.append('price', price)
@@ -36,7 +35,9 @@ const CreateDevice = ({show,onHide, types, brands}) => {
         formData.append('typeId',type._id)
         formData.append('info',JSON.stringify(info))
 
-        createDeviceAPI(formData).then(data => onHide())
+        addDevice(formData)
+
+        onHide()
     }
 
     return (
@@ -130,7 +131,7 @@ const CreateDevice = ({show,onHide, types, brands}) => {
             </Modal.Body>
             <Modal.Footer>
                 <Button variant='outline-danger' onClick={onHide}>Закрыть</Button>
-                <Button variant='outline-success' onClick={addDevice}>Добавить</Button>
+                <Button variant='outline-success' onClick={handlerBtn}>Добавить</Button>
             </Modal.Footer>
         </Modal>
     );

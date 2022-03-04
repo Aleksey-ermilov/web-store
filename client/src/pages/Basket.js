@@ -4,20 +4,24 @@ import {useHistory} from "react-router-dom";
 
 import  {Container, Button} from "react-bootstrap";
 
-import {removeDeviceBasket, updateDeviceBasket } from "../store/user/actionUser";
+import {removeDeviceBasket, updateDeviceBasket,setError } from "../store/user/actionUser";
 import {addToBasket} from "../http/userAPI";
 
 import BasketCard from "../components/BasketCard";
 import {PAYMENT_ROUTE, SHOP_ROUTE} from "../utils/consts";
 
 
-const Basket = ({basket, removeDeviceBasket,updateDeviceBasket}) => {
+const Basket = ({basket, removeDeviceBasket,updateDeviceBasket,setError}) => {
 
     const history = useHistory()
 
     useEffect( () => {
         async function myF (){
-            await addToBasket(basket)
+            try {
+                await addToBasket(basket)
+            } catch (e){
+                setError(e.response.data.message)
+            }
         }
         myF ()
     }, [basket])
@@ -74,7 +78,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-    removeDeviceBasket, updateDeviceBasket
+    removeDeviceBasket, updateDeviceBasket,setError
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(Basket);
