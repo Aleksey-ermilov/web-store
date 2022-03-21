@@ -11,7 +11,7 @@
     "server": "npm run dev --prefix server",
     "client": "npm run start --prefix client",
     "start": "concurrently \"npm run server\" \"npm run client\"",
-    "install": "concurrently \"nmp install --prefix server\" \"npm install --prefix client\"",
+    "install": "concurrently \"npm install\" \"npm install --prefix server\" \"npm install --prefix client\""
   },
   "author": "",
   "license": "ISC"
